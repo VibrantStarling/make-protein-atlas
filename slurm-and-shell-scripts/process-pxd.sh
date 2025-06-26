@@ -189,12 +189,12 @@ tput setaf 3; echo "Raw files will be converted to mzML"; tput sgr0
             tput setaf 2; echo "------ END of file conversion for ${i} ------"; tput sgr0
             echo
         fi
-        done
-        # tidy up slurm outputs
+	        # tidy up slurm outputs
         rm *.out
         rm *.err
         # navigate to parent directory
         cd ../
+        done
     done
 fi
 
