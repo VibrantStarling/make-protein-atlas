@@ -185,16 +185,18 @@ tput setaf 3; echo "Raw files will be converted to mzML"; tput sgr0
             # run mono in array to convert raw files to mzML
             tput setaf 6; echo "------ START of file conversion for ${n} raw files in ${i} ------"; tput sgr 0
             sbatch --array=1-${n} -c 2 -J ${i} --wait ${pathtofraggerslurms}/convert_mzML_array.sh 
-            wait
+	    if [ $F -eq 1 ]
+            	wait
+	    fi
             tput setaf 2; echo "------ END of file conversion for ${i} ------"; tput sgr0
             echo
         fi
-        done
-        # tidy up slurm outputs
+	        # tidy up slurm outputs
         rm *.out
         rm *.err
         # navigate to parent directory
         cd ../
+        done
     done
 fi
 
