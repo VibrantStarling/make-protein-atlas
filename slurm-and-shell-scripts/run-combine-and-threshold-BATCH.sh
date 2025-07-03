@@ -47,6 +47,6 @@ outsuffix=$2
 
 python3 1-python-qc-scripts/Combine-PXD-thresholded-tsv.py -l ${pxdlist} -o ${outsuffix}
 python3 1-python-qc-scripts/Collapse_by_max_prob_v2.py ${outsuffix}_PepAtlas-COMBINED-thresholded.tsv
-python3 1-python-qc-scripts/CalculateFDR_and_threshold_untested_v2.py -f ${outsuffix}_PepAtlas-COMBINED-thresholded_peptide_final_collapsed.tsv -d rev_ -t 0.01 -p
+python3 1-python-qc-scripts/CalculateFDR_and_threshold_v2.py -f ${outsuffix}_PepAtlas-COMBINED-thresholded_peptide_final_collapsed.tsv -d rev_ -t 0.01 -p
 
 
