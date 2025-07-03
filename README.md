@@ -11,13 +11,13 @@
 <p style="margin-left: 40px">
 <ol type="a">
   <li>
-    <a href="https://github.com/VibrantStarling/make-protein-atlas/edit/main/README.md#3a-search-tools-">Search tools</a>
+    <a href="https://github.com/VibrantStarling/make-protein-atlas/tree/main?tab=readme-ov-file#3a-search-tools-">Search tools</a>
   </li>
  <li>
-   <a href="https://github.com/VibrantStarling/make-protein-atlas/edit/main/README.md#3b-instrument-parameters-">Instrument parameters</a>
+   <a href="https://github.com/VibrantStarling/make-protein-atlas/tree/main?tab=readme-ov-file#3b-instrument-parameters-">Instrument parameters</a>
    </li>
  <li>
-   <a href="https://github.com/VibrantStarling/make-protein-atlas/edit/main/README.md#3c-qc-of-data-">QC of data</a></li>
+   <a href="https://github.com/VibrantStarling/make-protein-atlas/tree/main?tab=readme-ov-file#3c-qc-of-data-">QC of data</a></li>
 </ol>
 </p>
 
