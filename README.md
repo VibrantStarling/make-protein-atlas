@@ -29,7 +29,7 @@
 
 # Introduction <a name="introduction"></a>
 
-For this task, we want to get peptide-level support for genes within a genome, sometimes called proteogenomics. We source mass spectrometry (MS) data from ProteomeXchange, and its underlying repositories \- PRIDE, MassIVE, IProx etc. We then define a search database (see below), and run the Trans Proteomic Pipeline on our linux HPC, to search MS raw data against the database, generate statistics etc. The data is then passed to Eric Deutsch at PeptideAtlas, who loads it into their database, and does a few extra steps of post-processing. We then get data out in TSV format. 
+For this task, we want to get peptide-level support for genes within a genome, sometimes called proteogenomics. We source mass spectrometry (MS) data from ProteomeXchange, and its underlying repositories - PRIDE, MassIVE, IProx etc. We then define a search database (see below), and run the Trans Proteomic Pipeline on our linux HPC, to search MS raw data against the database, generate statistics etc. The data is then passed to Eric Deutsch at PeptideAtlas, who loads it into their database, and does a few extra steps of post-processing. We then get data out in TSV format. 
 
 **Several steps of this guide have been converted into a set of scripts and a pipeline (process-pxd.sh) that runs them all together.** The github for all these files can be found here: [https://github.com/VibrantStarling/make-protein-atlas](https://github.com/VibrantStarling/make-protein-atlas). You can also find further instruction on how to use this repository at the bottom of this document, [here](#running-the-pipeline).
 
@@ -70,7 +70,7 @@ There is no hard and fast rule for what to include in a database. Try out a few 
 
 ## Starting out
 
-Basic principles \- when performing proteogenomics, we generally start from an assumption that the “official” gene models are not completely correct. We want to find peptides that map onto the proteins from those gene models (the “official” proteome), but also find peptides that could  map to other gene models. These gene models may have been predicted by pipelines in the past \- like “Ensembl *ab initio*” models, by running *de novo* predictions e.g. with BRAKER3 / FunAnnotate (instructions on how to do this: [https://github.com/VibrantStarling/genomics-from-the-ground-up](https://github.com/VibrantStarling/genomics-from-the-ground-up) ), or by assembling transcriptomics data into plausible transcripts. For example, if long read (ISO-SEQ) transcripts exist, these can be translated in three frames, taking all open reading frames that run from an ATG to a stop codon. 
+Basic principles - when performing proteogenomics, we generally start from an assumption that the “official” gene models are not completely correct. We want to find peptides that map onto the proteins from those gene models (the “official” proteome), but also find peptides that could  map to other gene models. These gene models may have been predicted by pipelines in the past - like “Ensembl *ab initio*” models, by running *de novo* predictions e.g. with BRAKER3 / FunAnnotate (instructions on how to do this: [https://github.com/VibrantStarling/genomics-from-the-ground-up](https://github.com/VibrantStarling/genomics-from-the-ground-up) ), or by assembling transcriptomics data into plausible transcripts. For example, if long read (ISO-SEQ) transcripts exist, these can be translated in three frames, taking all open reading frames that run from an ATG to a stop codon. 
 
 It is generally not advisable to perform a six-frame genome translation. This produces a very large search database (losing statistical power), and does not predict intron-spanning peptides (ISPs). ISPs are some of the most useful datatypes we can get from proteomics.
 
@@ -88,7 +88,7 @@ There are several ways to compile fasta sequences for a search database. The end
 **Amnio acid fasta files**
 
 1. Select your fasta files with your desired genes  
-2. If you have multiple files, merge all protein fasta files into one, e.g. using cat \*.fasta \> ../final\_database/full\_species\_merged.fasta. *It does not matter if you have repeat sequences.*
+2. If you have multiple files, merge all protein fasta files into one, e.g. using `cat *.fasta > ../final_database/full_species_merged.fasta`. *It does not matter if you have repeat sequences.*
 
 **gff/gtf files**
 
@@ -110,23 +110,23 @@ With [FragPipe](https://fragpipe.nesvilab.org/docs/tutorial_fragpipe.html#specif
 
 When retrieving your datasets, make sure you target your species of interest. For pathogens in particular, you want to ensure data is NOT from host infected proteomes, although it can be co-cultured datasets if this is common for a given species. For these cases, you should include the host proteome (e.g. human) in the search database.
 
-For general global proteomics, you want to avoid datasets enriched for post translational modifications (PTMs) like phosphorylation, glycosylation or acetylation etc. You also want to avoid interactome and TurboID sets which usually only identify a few proteins. Ideally, source articles for datasets would mention that they have identified \>2K \- 3K proteins, or a minimum say of \>1K. 
+For general global proteomics, you want to avoid datasets enriched for post translational modifications (PTMs) like phosphorylation, glycosylation or acetylation etc. You also want to avoid interactome and TurboID sets which usually only identify a few proteins. Ideally, source articles for datasets would mention that they have identified >2K - 3K proteins, or a minimum say of >1K. 
 
 ## Choosing datasets
 
 1. Go to [https://proteomecentral.proteomexchange.org/](https://proteomecentral.proteomexchange.org/) and search for your species.   
 2. Download the results as a TSV, then move in to google sheets to annotate them.  
 3. Add a column for:  
-   1. **Priority**  \- for scoring how likely you are to use them (0,1,2 \-\> No, Maybe, Yes)  
-   2. **Notes** \- keep track of reasons for your scoring, particularly Maybes  
-   3. **Parameters** \- track what label type was used (TMT, iTRAQ, label-free, *etc*.). This will determine what parameters we will use for MS-Fragger searches  
-   4. **Instrument** \- track what instrument was used for the dataset   
+   1. **Priority**  - for scoring how likely you are to use them (0,1,2 -> No, Maybe, Yes)  
+   2. **Notes** - keep track of reasons for your scoring, particularly Maybes  
+   3. **Parameters** - track what label type was used (TMT, iTRAQ, label-free, *etc*.). This will determine what parameters we will use for MS-Fragger searches  
+   4. **Instrument** - track what instrument was used for the dataset   
       1. Favour Thermo instruments. Orbitrap Fusion, Orbitrap Lumos, Orbitrap Astral, Q-Exactive, Q-Exactive HF are best. Maybe include LTQ Orbitrap if paper reports it is a big data sets e.g. identifying \>2000 proteins). LTQ Orbitrap have low-res fragment ions, and need this setting change in search parameters  
       2. Exclude Waters (SYNAPT) instruments, and usually exclude Bruker (timsTOF) and SCIEX (TripleTOF), unless you are struggling for data.  
-   5. **Data dependent acquisition (DDA)** \- If paper or submission mentions Data independent acquisition (DIA), we exclude.   
+   5. **Data dependent acquisition (DDA)** - If paper or submission mentions Data independent acquisition (DIA), we exclude.   
       1. Markers of DIA include  (aka. SWATH) include using software DIA-NN, MaxDIA, Spectronaut or Skyline.   
       2. Markers of DDA including using MaxQuant, ProteomeDiscoverer, FragPipe…  
-   6. **Source database.** It is easier to get fast download from PRIDE direct to the Linux cluster. If large datasets are in other databases, we can get them via a more manual process e.g. using FileZilla for FTP transfer to a local PC, then copying them to the cluster, but this is slow and annoying\!  
+   6. **Source database.** It is easier to get fast download from PRIDE direct to the Linux cluster. If large datasets are in other databases, we can get them via a more manual process e.g. using FileZilla for FTP transfer to a local PC, then copying them to the cluster, but this is slow and annoying!  
 4. Go through the sheet and find the datasets you want to use.   
 5. Often the link to a source publication is missing. If you google search for the PXD identifier, you can often find this embedded in a paper. Keep track of this (add manually to the publication column). We can inform PRIDE support to add the publication link to the dataset.
 
@@ -134,8 +134,8 @@ For general global proteomics, you want to avoid datasets enriched for post tran
 
 **NOTE \-** this step is included in the pipeline at the end of this document and can handle multiple PXDs at once. This section breaks down what you would need to do to do it yourself for one dataset.
 
-1. On the login/head node on HPC make a directory for your species in  /mnt/hc-storage/groups/peptideatlas\_builds/. Avoid spaces in your directory name, call it something informative like Toxoplasma\_gondii\_ME49, ToxoplasmaGondiiME49, or TgondiiME49  
-2. activate [screen]() so you can leave your window to idle without risk of it timing out
+1. On the login/head node on HPC make a directory for your species in  `/mnt/hc-storage/groups/peptideatlas_builds/`. Avoid spaces in your directory name, call it something informative like `Toxoplasma_gondii_ME49`, `ToxoplasmaGondiiME49`, or `TgondiiME49`
+2. activate [screen](https://www.howtogeek.com/662422/how-to-use-linuxs-screen-command/) so you can leave your window to idle without risk of it timing out
 ```
 screen
 ```
@@ -283,17 +283,24 @@ git clone https://github.com/VibrantStarling/make-protein-atlas.git
 
 **General usage:**
 
-If you do not specify any of the flags (-D, \-M, or \-F), then it will run the whole pipeline by default.
+If you do not specify any of the flags (-D, -M, or -F), then it will run the whole pipeline by default.
+
+`-D` - downloads PXD accessions with pridepy
+
+`-M` - converts raw files to mzML
+
+`-F` - runs the peptide search and QC
+
 ```
 bash process-pxd.sh -l pxd-list [-b database.fasta] [-q python-qc-directory] [-s slurm-script-directory] [-p fragger-params-directory] [-D] [-M] [-F]
 ```
 
-***This script is functional, but not optimised, so you may need a specific file layout for it (as arranged in this reposiotory). However, in theory, you could have one folder for all the scripts and just supply that one file to each of the directory options (-q, \-s, \-p)***
+***This script is functional, but not optimised, so you may need a specific file layout for it (as arranged in this reposiotory). However, in theory, you could have one folder for all the scripts and just supply that one file to each of the directory options (-q, -s, -p)***
 
 
 **You will need:**
 
-1. **A PXD list.** A list of PXD accessions and the type of data in them. Accession and type are delimited by a tab, and each row has a separate entry. Type defines which MS-fragger params file will be used. It will always look for the pattern of `fragger\_${type}.params`, where `${type}` could be filled in with `LM` to make `fragger\_LM.params`. If you make a new .params file, make sure it follows that naming convention.  
+1. **A PXD list.** A list of PXD accessions and the type of data in them. Accession and type are delimited by a tab, and each row has a separate entry. Type defines which MS-fragger params file will be used. It will always look for the pattern of `fragger_${type}.params`, where `${type}` could be filled in with `LM` to make `fragger_LM.params`. If you make a new .params file, make sure it follows that naming convention.  
 ```
 PXD015269  TMT
 PXD033642  TMT
@@ -308,7 +315,7 @@ PXD047027  LF
 Feed the two files and three directories to the process-pxd.sh script and it will run the whole pipeline by default. It will download and produce directories in your current directory.
 
 ```
-bash process-pxd.sh \-l pxd\_list.txt \-b path/to/database.fasta \-q path/to/python-qc-directory \-s path/to/slurm-and-bash-script-directory \-p path/to/MS-fragger-params-directory
+bash process-pxd.sh -l pxd_list.txt -b path/to/database.fasta -q path/to/python-qc-directory -s path/to/slurm-and-bash-script-directory -p path/to/MS-fragger-params-directory
 ```
 
 If you need to run the download (-D), mzml conversion (-M), or fragger search and postprocessing steps (-F) separately, add the relevant flag. 
