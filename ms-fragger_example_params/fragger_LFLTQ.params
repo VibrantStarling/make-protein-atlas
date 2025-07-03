@@ -1,4 +1,4 @@
-database_name = /mnt/hc-storage/users/davstaff/Toxoplasma_gondii_PXD/1-protein-databases/2024-11-26-decoys-contam-Tgondii-ME49-only_AnnotatedProtein_DB_plus20K_human.fasta
+database_name =
 num_threads = 80					# Number of CPU threads to use.
 
 precursor_mass_lower = -50			# Lower bound of the precursor mass window.
