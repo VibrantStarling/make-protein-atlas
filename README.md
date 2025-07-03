@@ -104,7 +104,7 @@ There are several ways to compile fasta sequences for a search database. The end
 With [FragPipe](https://fragpipe.nesvilab.org/docs/tutorial_fragpipe.html#specify-a-protein-sequence-database) - this quickly and simply adds both contaminants and decoys in one and produces everything as one fasta. Make a note of your decoy prefix. Fragpipe can be downloaded and run as a GUI program as depicted below, or in commandline.
 
 **You can pass a fasta file (combined from the official proteins and your extra annotations) to fragpipe like this:**  
-![](https://github.com/VibrantStarling/make-protein-atlas/blob/main/Building%20a%20Peptide%20Atlas%20on%20Liverpool%20HPC/images/image3.png)
+!["screenshot of Fragpipe GUI"](https://github.com/VibrantStarling/make-protein-atlas/blob/main/images/image3.png)
 
 # 2\. Choosing and retrieving peptide data <a name="2.-choosing-and-retrieving-peptide-data"></a>
 
