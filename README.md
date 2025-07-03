@@ -221,10 +221,12 @@ fragment\_mass\_units \= 0           	\# Fragment mass tolerance units (0 for Da
 
 Andy has made some [python QC scripts](https://github.com/VibrantStarling/make-protein-atlas/tree/main/python-qc-scripts) that filter data and convert them into tsv format. In order to run these, you need to logged into the login node have run:
 
+```
+#You should only have to do this once, but sometimes updates to the login node’s Python might reset this. Consider setting up a conda environment.
+
 module load python   
 pip3 install pandas matplotlib numpy
-
-You should only have to do this once, but sometimes updates to the login node’s Python might reset this. Consider setting up a conda environment.
+```
 
 After running the python scripts, this extracts the peptide-spectrum match (PSM) data from the final pepXML file in the pipeline, into various CSV files, and applying FDR thresholding \- the final file is: PXD0XXXXX\_interact-ipro.pep\_thresholded.tsv. A stats file is also produced PXD0XXXXX\_psm\_stats.tsv, which produces data like this:
 
@@ -247,9 +249,9 @@ If the analysis has gone well, we are looking at recovery of say 25-60% PSMs per
 # 4\. Combining and collapsing data <a name="combining-and-collapsing-data"></a>
 
 Run [run-combine-and-threshold-BATCH.sh](https://github.com/VibrantStarling/make-protein-atlas/blob/main/slurm-and-shell-scripts/run-combine-and-threshold-BATCH.sh) to combine, collapse, and threshold all the individual PXD files by peptide.
-
+```
 sbatch run-combine-and-threshold-BATCH.sh pxdlist.txt outsuffix
-
+```
 # 5\. Visualising peptides on a genome <a name="visualising-peptides-on-a-genome"></a>
 
 *ANDY: Ideally, I would like to convert peptide-level data to BED or BAM format for visualising directly in genome browsers, like JBrowse. This is technically fairly straightforward, since we could get the GFF of gene models from which proteins are derived. From proteomics results, we get the position of the peptide within a protein, and then need an extra step to figure out the corresponding genomic position \- including mapping some peptides across intron junctions. The algorithm is a little fiddly but not really that complex, but I don’t currently have a code base I am happy with. This is a task for someone to take on…*
@@ -275,8 +277,9 @@ proBAMsuite, a possibly useful tool? [https://www.mcponline.org/article/S1535-94
 It allows you to run each stage of the pipeline separately, so if you need to add a file, or just rerun the postprocessing step, you can do it without reprocessing every single file.
 
 You can download a repository with all the necessary directories and directory structures from 
-
+```
 git clone https://github.com/VibrantStarling/make-protein-atlas.git
+```
 
 **General usage:**
 
@@ -304,7 +307,9 @@ PXD047027  LF
 
 Feed the two files and three directories to the process-pxd.sh script and it will run the whole pipeline by default. It will download and produce directories in your current directory.
 
+```
 bash process-pxd.sh \-l pxd\_list.txt \-b path/to/database.fasta \-q path/to/python-qc-directory \-s path/to/slurm-and-bash-script-directory \-p path/to/MS-fragger-params-directory
+```
 
 If you need to run the download (-D), mzml conversion (-M), or fragger search and postprocessing steps (-F) separately, add the relevant flag. 
 
