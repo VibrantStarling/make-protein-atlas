@@ -48,6 +48,6 @@ pathtopythonqc=$1
 FILE_PREFIX=$2
 
 python3 ${pathtopythonqc}/Convert_pepXML_toCSV.py interact-ipro.pep.xml ${FILE_PREFIX}
-python3 ${pathtopythonqc}/CalculateFDR_and_threshold_untested_v2.py -f ${FILE_PREFIX}_interact-ipro.pep.tsv  -d rev_ -t 0.01
+python3 ${pathtopythonqc}/CalculateFDR_and_threshold_v2.py -f ${FILE_PREFIX}_interact-ipro.pep.tsv  -d rev_ -t 0.01
 python3 ${pathtopythonqc}/calculate_psm_stats.py ${FILE_PREFIX}_interact-ipro.pep_thresholded.tsv  ${FILE_PREFIX}
 
